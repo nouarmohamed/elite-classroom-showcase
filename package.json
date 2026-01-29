@@ -1,6 +1,8 @@
 {
-  "name": "site",
-  "version": "0.1.0",
+  "name": "elite-classroom-showcase",
+  "version": "1.0.0",
+  "description": "A cinematic, award-worthy web experience inspired by Classroom of the Elite",
+  "author": "Mohamed Nouar",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,9 +11,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.14.2",
     "next": "16.1.6",
+    "pdfjs-dist": "^5.4.530",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-pdf": "^10.3.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

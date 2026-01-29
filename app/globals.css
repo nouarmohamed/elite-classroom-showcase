@@ -1,26 +1,573 @@
+/* Google Fonts - Playfair Display + Inter */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   CLASSROOM OF THE ELITE — Design System
+   Elite. Dark. Psychological.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Elite Color Palette */
+  --elite-black: #050505;
+  --elite-darker: #0a0a0a;
+  --elite-dark: #0d0d0d;
+  --elite-surface: #111111;
+  --elite-elevated: #161616;
+  --elite-muted: #1a1a1a;
+
+  /* Accent Colors */
+  --crimson: #8B0000;
+  --crimson-glow: #a30000;
+  --gold: #C9A227;
+  --gold-muted: #9a7b1c;
+  --silver: #C0C0C0;
+
+  /* Text Colors */
+  --text-primary: #ededed;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 10vw, 8rem);
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--elite-black);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Typography
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.display-huge {
+  font-size: clamp(3rem, 12vw, 10rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+}
+
+.display-large {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.display-medium {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 600;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Noise Overlay
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Glitch Text Effect
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.glitch {
+  position: relative;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--crimson);
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: 2px 0 var(--gold);
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  animation: glitch-anim2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
+  }
+
+  10% {
+    clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%);
+  }
+
+  20% {
+    clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%);
+  }
+
+  30% {
+    clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%);
+  }
+
+  40% {
+    clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%);
+  }
+
+  50% {
+    clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%);
+  }
+
+  60% {
+    clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%);
+  }
+
+  70% {
+    clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%);
+  }
+
+  80% {
+    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+  }
+
+  90% {
+    clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%);
+  }
+
+  100% {
+    clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%);
+  }
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%);
+  }
+
+  15% {
+    clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%);
+  }
+
+  25% {
+    clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%);
+  }
+
+  35% {
+    clip-path: polygon(0 45%, 100% 45%, 100% 45%, 0 45%);
+  }
+
+  50% {
+    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+  }
+
+  65% {
+    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+  }
+
+  75% {
+    clip-path: polygon(0 30%, 100% 30%, 100% 25%, 0 25%);
+  }
+
+  90% {
+    clip-path: polygon(0 85%, 100% 85%, 100% 85%, 0 85%);
+  }
+
+  100% {
+    clip-path: polygon(0 90%, 100% 90%, 100% 95%, 0 95%);
+  }
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+
+  20% {
+    transform: skew(0deg);
+  }
+
+  21% {
+    transform: skew(0.5deg);
+  }
+
+  22% {
+    transform: skew(0deg);
+  }
+
+  40% {
+    transform: skew(0deg);
+  }
+
+  41% {
+    transform: skew(-0.3deg);
+  }
+
+  42% {
+    transform: skew(0deg);
+  }
+
+  60% {
+    transform: skew(0deg);
+  }
+
+  80% {
+    transform: skew(0deg);
+  }
+
+  81% {
+    transform: skew(0.2deg);
+  }
+
+  82% {
+    transform: skew(0deg);
+  }
+
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Reveal Animations
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+.reveal-fade {
+  opacity: 0;
+}
+
+.reveal-mask {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Glassmorphism
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.glass {
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: rgba(17, 17, 17, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Custom Scrollbar
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--elite-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--elite-elevated);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--crimson);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Magnetic Button
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  cursor: pointer;
+  transition: all 0.4s var(--ease-out-expo);
+  overflow: hidden;
+}
+
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--crimson);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-out-expo);
+  z-index: -1;
+}
+
+.magnetic-btn:hover {
+  border-color: var(--crimson);
+}
+
+.magnetic-btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Cursor
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--text-primary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.hover {
+  width: 60px;
+  height: 60px;
+  border-color: var(--crimson);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Image Distortion on Hover
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.distort-hover {
+  transition: filter 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+}
+
+.distort-hover:hover {
+  filter: saturate(1.2) contrast(1.1);
+  transform: scale(1.02);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Volume Card Classified Effect
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.classified-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 3vw, 2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--crimson);
+  border: 3px solid var(--crimson);
+  padding: 0.5rem 1.5rem;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Quote Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.quote-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.quote-author {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-top: 2rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Horizontal Scroll Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.horizontal-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 3rem;
+  padding: 0 5vw;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tailwind Extensions
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  --color-background: var(--elite-black);
+  --color-foreground: var(--text-primary);
+
+  /* Elite Colors */
+  --color-elite-black: var(--elite-black);
+  --color-elite-darker: var(--elite-darker);
+  --color-elite-dark: var(--elite-dark);
+  --color-elite-surface: var(--elite-surface);
+  --color-elite-elevated: var(--elite-elevated);
+  --color-elite-muted: var(--elite-muted);
+
+  /* Accent Colors */
+  --color-crimson: var(--crimson);
+  --color-crimson-glow: var(--crimson-glow);
+  --color-gold: var(--gold);
+  --color-gold-muted: var(--gold-muted);
+  --color-silver: var(--silver);
+
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  /* Fonts */
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(139, 0, 0, 0.6);
+  }
+}
+
+@keyframes scroll-indicator {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-scroll-indicator {
+  animation: scroll-indicator 2s ease-in-out infinite;
 }
