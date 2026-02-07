@@ -107,7 +107,7 @@ export default function AboutSection() {
                     <div className="grid grid-cols-2 gap-8">
                         <StatCard number={35} label="Light Novel Volumes" />
                         <StatCard number={3} label="Anime Seasons" />
-                        <StatCard number={4} label="School Years" />
+                        <StatCard number={3} label="School Years" />
                         <StatCard number={100} suffix="M+" label="Copies Sold" />
                     </div>
                 </div>

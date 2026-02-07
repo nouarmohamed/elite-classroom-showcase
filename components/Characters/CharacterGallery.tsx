@@ -46,7 +46,7 @@ const characters: Character[] = [
     {
         name: 'Kouenji Rokusuke',
         japaneseName: '高円寺 六助',
-        image: '/images/koinji.jpeg',
+        image: '/images/c4.jpeg',
         quote: '"I am a perfect being. I have no need to prove myself to anyone."',
         class: 'Class D',
     },

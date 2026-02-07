@@ -16,26 +16,49 @@ const navLinks = [
 export default function Navigation() {
     const navRef = useRef<HTMLElement>(null);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const lastScrollY = useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 100);
+            const currentScrollY = window.scrollY;
+
+            // Update background state
+            setIsScrolled(currentScrollY > 100);
+
+            // Hide on scroll down, show on scroll up
+            if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+                // Scrolling down & past threshold
+                setIsHidden(true);
+            } else {
+                // Scrolling up
+                setIsHidden(false);
+            }
+
+            lastScrollY.current = currentScrollY;
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from(navRef.current, {
-                y: -100,
-                opacity: 0,
-                duration: 1,
-                ease: 'power4.out',
-                delay: 1.5,
-            });
+            // Use fromTo to ensure final state is explicitly set
+            gsap.fromTo(navRef.current,
+                {
+                    y: -100,
+                    opacity: 0,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power4.out',
+                    delay: 1.5,
+                }
+            );
         }, navRef);
 
         return () => ctx.revert();
@@ -48,6 +71,7 @@ export default function Navigation() {
                 className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
                 style={{
                     padding: isScrolled ? '1rem 2rem' : '1.5rem 2rem',
+                    transform: isHidden ? 'translateY(-100%)' : 'translateY(0)',
                 }}
             >
                 <div
